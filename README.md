@@ -1,6 +1,6 @@
-# Sovereign Tech
+# HowardTech
 
-Marketing site for **Sovereign Tech** — a consultancy focused on accelerating
+Marketing site for **HowardTech** — a consultancy focused on accelerating
 software delivery with agent-driven development. A fast, fully static
 single-page app with a light corporate theme.
 

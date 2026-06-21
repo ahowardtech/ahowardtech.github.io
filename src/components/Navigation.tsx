@@ -29,7 +29,7 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
           <Terminal className="text-brand-accent w-5 h-5" />
         </span>
         <span className="text-lg font-black text-brand-ink tracking-tight">
-          Sovereign<span className="text-brand-accent">Tech</span>
+                Howard<span className="text-brand-accent">Tech</span>
         </span>
       </div>
 
@@ -96,7 +96,7 @@ export function Footer({ onNavigate }: { onNavigate: (view: string) => void }) {
                 <Terminal className="text-brand-accent w-5 h-5" />
               </span>
               <span className="text-lg font-black tracking-tight">
-                Sovereign<span className="text-brand-accent">Tech</span>
+          Howard<span className="text-brand-accent">Tech</span>
               </span>
             </div>
             <p className="text-white/60 text-sm leading-relaxed max-w-sm">
@@ -146,7 +146,7 @@ export function Footer({ onNavigate }: { onNavigate: (view: string) => void }) {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8">
           <span className="text-xs text-white/40">
-            © {new Date().getFullYear()} Sovereign Tech Consultancy. Engineered for precision.
+            © {new Date().getFullYear()} HowardTech Consultancy. Engineered for precision.
           </span>
           <div className="flex gap-6">
             <button onClick={(e) => { (e.currentTarget as HTMLButtonElement).blur(); }} className="text-xs text-white/40 hover:text-brand-accent transition-colors">Privacy Policy</button>

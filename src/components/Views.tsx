@@ -68,7 +68,7 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
               <span className="w-3 h-3 rounded-full bg-red-400" />
               <span className="w-3 h-3 rounded-full bg-amber-400" />
               <span className="w-3 h-3 rounded-full bg-green-400" />
-              <span className="ml-3 text-xs font-mono text-brand-text-secondary">sovereign — delivery pipeline</span>
+              <span className="ml-3 text-xs font-mono text-brand-text-secondary">howardtech — delivery pipeline</span>
             </div>
             <div className="p-6 font-mono text-[13px] space-y-3 bg-white">
               {[
@@ -113,7 +113,7 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
       {/* Fifty-fifty intro */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
-          <span className="eyebrow">Why Sovereign Tech</span>
+          <span className="eyebrow">Why HowardTech</span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-brand-ink mt-3 mb-6 tracking-tight leading-tight">
             Engineering velocity without the headcount
           </h2>
@@ -177,7 +177,7 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <div className="max-w-2xl">
             <span className="eyebrow">The Team</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-brand-ink mt-3 tracking-tight">The Sovereign Council</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-brand-ink mt-3 tracking-tight">The HowardTech Council</h2>
             <p className="text-brand-text-secondary text-lg mt-4 leading-relaxed">
               Four world-class architects at the intersection of AI orchestration, infrastructure, and secure delivery.
             </p>
@@ -404,7 +404,7 @@ export function MethodologyView() {
               <tr className="border-b border-brand-border">
                 <th className="p-6 text-xs font-bold uppercase tracking-[0.18em] text-brand-text-secondary">Dimension</th>
                 <th className="p-6 text-xs font-bold uppercase tracking-[0.18em] text-brand-text-secondary">Traditional Dev Shop</th>
-                <th className="p-6 text-xs font-bold uppercase tracking-[0.18em] text-brand-accent-dark bg-brand-accent/5">The Sovereign Edge</th>
+                <th className="p-6 text-xs font-bold uppercase tracking-[0.18em] text-brand-accent-dark bg-brand-accent/5">The HowardTech Edge</th>
               </tr>
             </thead>
             <tbody>
@@ -521,7 +521,7 @@ export function ContactView() {
             <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-text-secondary">Contact nodes</h3>
             {[
               { icon: MapPin, title: 'HQ — Berlin Hub', detail: 'Torstraße 112, 10119 Berlin' },
-              { icon: Mail, title: 'Email', detail: 'hello@sovereigntech.dev' },
+              { icon: Mail, title: 'Email', detail: 'hello@howardtech.dev' },
               { icon: Phone, title: 'Encrypted comms', detail: 'Signal: +49 176 000 0000' },
             ].map((n) => (
               <div key={n.title} className="flex gap-4">
