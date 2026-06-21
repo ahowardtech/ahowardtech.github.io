@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
-import { motion } from 'motion/react';
+import { useState, type FormEvent } from 'react';
+import { motion, AnimatePresence, type Variants } from 'motion/react';
 import {
   ArrowRight, Check, Zap, ShieldCheck, Workflow, Gauge, Bot, Users,
   Landmark, HeartPulse, ShoppingCart, Boxes, Truck, Building2,
@@ -20,13 +20,27 @@ const iconMap: Record<string, LucideIcon> = {
   History, Network, Workflow,
 };
 
+// Shared reveal variants for staggered section entrances.
+// Motion-safe: <MotionConfig reducedMotion="user"> in App.tsx strips the transform for reduced-motion users.
+const stagger: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
+const rise: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
+
 function SectionHeading({ eyebrow, title, center = false }: { eyebrow: string; title: string; center?: boolean }) {
   return (
-    <div className={`mb-14 ${center ? 'text-center' : ''}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className={`mb-14 ${center ? 'text-center' : ''}`}
+    >
       <span className="eyebrow">{eyebrow}</span>
       <h2 className="text-3xl md:text-4xl font-extrabold text-brand-ink mt-3 tracking-tight">{title}</h2>
       <div className={`w-16 h-1 bg-brand-accent rounded-full mt-5 ${center ? 'mx-auto' : ''}`} />
-    </div>
+    </motion.div>
   );
 }
 
@@ -36,30 +50,32 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
       {/* Hero */}
       <section className="relative overflow-hidden pt-36 pb-24 px-6 md:px-10">
         <div className="absolute -top-32 -right-24 w-[480px] h-[480px] bg-brand-accent/10 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-40 -left-32 w-[420px] h-[420px] bg-brand-cyan/10 rounded-full blur-[130px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(13,148,136,0.06),transparent_55%)]" />
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="inline-flex items-center gap-2 mb-6 bg-brand-accent/10 px-3.5 py-1.5 rounded-full">
+          <motion.div variants={stagger} initial="hidden" animate="show">
+            <motion.div variants={rise} className="inline-flex items-center gap-2 mb-6 bg-brand-accent/10 px-3.5 py-1.5 rounded-full">
               <span className="w-2 h-2 rounded-full bg-brand-accent animate-agent-pulse" />
               <span className="text-[11px] font-bold text-brand-accent-dark uppercase tracking-[0.18em]">Agent Workforce Online</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-black text-brand-ink leading-[1.05] tracking-tight mb-6">
+            </motion.div>
+            <motion.h1 variants={rise} className="text-4xl md:text-6xl font-black text-brand-ink leading-[1.05] tracking-tight mb-6">
               Ship production software at <span className="accent-gradient-text">agent speed</span>
-            </h1>
-            <p className="text-lg text-brand-text-secondary leading-relaxed mb-9 max-w-xl">
+            </motion.h1>
+            <motion.p variants={rise} className="text-lg text-brand-text-secondary leading-relaxed mb-9 max-w-xl">
               We pair senior engineers with an autonomous agent workforce to design, build, and ship enterprise software — accelerating your roadmap without expanding headcount.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            </motion.p>
+            <motion.div variants={rise} className="flex flex-col sm:flex-row gap-4">
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('contact')} className="btn-primary px-7 py-3.5 text-sm">
                 Get Started <ArrowRight className="w-4 h-4" />
               </motion.button>
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('methodology')} className="btn-ghost px-7 py-3.5 text-sm">
                 View Methodology
               </motion.button>
-            </div>
-            <div className="flex items-center gap-6 mt-10 text-sm text-brand-text-secondary">
+            </motion.div>
+            <motion.div variants={rise} className="flex items-center gap-6 mt-10 text-sm text-brand-text-secondary">
               <span className="flex items-center gap-2"><Check className="w-4 h-4 text-brand-accent" /> 3x faster delivery</span>
               <span className="flex items-center gap-2"><Check className="w-4 h-4 text-brand-accent" /> Senior-led</span>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Terminal mock */}
@@ -95,19 +111,19 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
 
       {/* Stats band */}
       <section className="border-y border-brand-border bg-brand-surface">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="max-w-7xl mx-auto px-6 md:px-10 py-12 grid grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             { stat: '3x', label: 'Faster delivery velocity' },
             { stat: '98%', label: 'Automated code accuracy' },
             { stat: '100+', label: 'Agents in the workforce' },
             { stat: '4', label: 'Senior architects leading' },
           ].map((s) => (
-            <div key={s.label} className="text-center">
+            <motion.div variants={rise} key={s.label} className="text-center">
               <div className="text-4xl md:text-5xl font-black text-brand-ink mb-2">{s.stat}</div>
               <div className="text-xs font-semibold uppercase tracking-wider text-brand-text-secondary">{s.label}</div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Fifty-fifty intro */}
@@ -135,31 +151,31 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
             ))}
           </ul>
         </div>
-        <div className="grid grid-cols-2 gap-5">
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="grid grid-cols-2 gap-5">
           {[
             { icon: Zap, title: 'Parallel agents', desc: 'Many tasks executed at once' },
             { icon: ShieldCheck, title: 'Audited output', desc: 'Every change reviewed' },
             { icon: Gauge, title: 'Faster cycles', desc: 'Days, not sprints' },
             { icon: Bot, title: '24/7 workforce', desc: 'Tireless and consistent' },
           ].map((c) => (
-            <div key={c.title} className="card p-7">
+            <motion.div variants={rise} key={c.title} className="card p-7">
               <c.icon className="w-8 h-8 text-brand-accent mb-4" />
               <h3 className="font-bold text-brand-ink mb-1.5">{c.title}</h3>
               <p className="text-sm text-brand-text-secondary leading-relaxed">{c.desc}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Industries */}
       <section className="bg-brand-surface border-y border-brand-border py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <SectionHeading eyebrow="Industries" title="Delivered across industries" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {INDUSTRIES.map((ind) => {
               const Icon = iconMap[ind.icon] ?? Workflow;
               return (
-                <motion.div key={ind.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} className="card p-8">
+                <motion.div key={ind.id} variants={rise} className="card p-8">
                   <div className="w-12 h-12 rounded-lg bg-brand-accent/10 flex items-center justify-center mb-5">
                     <Icon className="w-6 h-6 text-brand-accent" />
                   </div>
@@ -168,7 +184,7 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -186,9 +202,9 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
             How we work <ArrowRight className="w-4 h-4" />
           </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {CONSULTANTS.map((c) => (
-            <div key={c.id} className="card overflow-hidden group">
+            <motion.div variants={rise} key={c.id} className="card overflow-hidden group">
               <div className="relative aspect-[4/5] overflow-hidden bg-brand-surface-light">
                 <img src={c.image} alt={c.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
               </div>
@@ -197,9 +213,9 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
                 <p className="text-brand-accent text-xs font-bold uppercase tracking-widest mt-1 mb-3">{c.role}</p>
                 <p className="text-sm text-brand-text-secondary leading-relaxed">{c.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA */}
@@ -245,11 +261,11 @@ export function ServicesView() {
 
       {/* Core competencies */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {COMPETENCIES.map((item) => {
             const Icon = item.id === 'app-dev' ? Rocket : item.id === 'legacy' ? History : Network;
             return (
-              <div key={item.id} className="card p-9 flex flex-col">
+              <motion.div variants={rise} key={item.id} className="card p-9 flex flex-col">
                 <div className="w-12 h-12 rounded-lg bg-brand-accent/10 flex items-center justify-center mb-6">
                   <Icon className="w-6 h-6 text-brand-accent" />
                 </div>
@@ -263,10 +279,10 @@ export function ServicesView() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </section>
 
       {/* Comprehensive services accordion */}
@@ -287,6 +303,7 @@ export function ServicesView() {
                   <div key={svc.id}>
                     <button
                       onClick={() => setOpenId(open ? null : svc.id)}
+                      aria-expanded={open}
                       className="w-full flex items-center justify-between gap-4 py-5 text-left group"
                     >
                       <span className={`text-lg font-semibold transition-colors ${open ? 'text-brand-accent' : 'text-brand-ink group-hover:text-brand-accent'}`}>
@@ -296,15 +313,22 @@ export function ServicesView() {
                         {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                       </span>
                     </button>
-                    {open && (
-                      <motion.p
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className="text-brand-text-secondary leading-relaxed pb-6 max-w-2xl"
-                      >
-                        {svc.description}
-                      </motion.p>
-                    )}
+                    <AnimatePresence initial={false}>
+                      {open && (
+                        <motion.div
+                          key="panel"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-brand-text-secondary leading-relaxed pb-6 max-w-2xl">
+                            {svc.description}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 );
               })}
@@ -317,14 +341,14 @@ export function ServicesView() {
       <section className="bg-brand-surface border-y border-brand-border py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <SectionHeading eyebrow="Tech stack" title="The technologies we use" center />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {TECHNOLOGIES.map((tech) => (
-              <div key={tech.name} className="card p-6">
+              <motion.div variants={rise} key={tech.name} className="card p-6">
                 <h3 className="font-bold text-brand-ink mb-2">{tech.name}</h3>
                 <p className="text-sm text-brand-text-secondary leading-relaxed">{tech.description}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>
@@ -375,11 +399,11 @@ export function MethodologyView() {
       <section className="bg-brand-surface border-y border-brand-border py-24">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <SectionHeading eyebrow="The Process" title="A streamlined development approach" center />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {PROCESS_PHASES.map((p) => {
               const Icon = iconMap[p.icon] ?? Workflow;
               return (
-                <div key={p.num} className="card p-8">
+                <motion.div variants={rise} key={p.num} className="card p-8">
                   <div className="flex items-center justify-between mb-5">
                     <span className="text-5xl font-black text-brand-accent/15 leading-none">{p.num}</span>
                     <span className="w-11 h-11 rounded-lg bg-brand-accent/10 flex items-center justify-center">
@@ -388,17 +412,23 @@ export function MethodologyView() {
                   </div>
                   <h3 className="text-lg font-bold text-brand-ink mb-2">Phase {p.num} · {p.title}</h3>
                   <p className="text-sm text-brand-text-secondary leading-relaxed">{p.description}</p>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* The Shift comparison */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-24">
         <SectionHeading eyebrow="The Shift" title="Why agent-driven delivery wins" center />
-        <div className="overflow-x-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="overflow-x-auto"
+        >
           <table className="w-full text-left border-collapse card overflow-hidden">
             <thead>
               <tr className="border-b border-brand-border">
@@ -421,7 +451,7 @@ export function MethodologyView() {
               ))}
             </tbody>
           </table>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
@@ -431,6 +461,27 @@ export function ContactView() {
   const [submitted, setSubmitted] = useState(false);
 
   const inputClass = 'w-full bg-white border border-brand-border rounded-lg px-4 py-3 text-brand-ink placeholder:text-brand-text-secondary/60 focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/15 outline-none transition';
+
+  // Compose a pre-filled email from the form fields and open the visitor's mail client.
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const get = (k: string) => String(data.get(k) ?? '').trim();
+    const name = get('name');
+    const subject = `Project inquiry — ${get('service')}${name ? ` (${name})` : ''}`;
+    const body = [
+      `Name: ${name}`,
+      `Email: ${get('email')}`,
+      `Service track: ${get('service')}`,
+      `Target budget: ${get('budget')}`,
+      `Timeline: ${get('timeline')}`,
+      '',
+      'Technical requirements:',
+      get('details'),
+    ].join('\n');
+    window.location.href = `mailto:hello@howardtech.dev?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setSubmitted(true);
+  };
 
   return (
     <div className="pt-36 max-w-7xl mx-auto px-6 md:px-10">
@@ -456,46 +507,46 @@ export function ContactView() {
                 <span className="w-16 h-16 rounded-full bg-brand-accent/10 flex items-center justify-center mb-5">
                   <Check className="w-8 h-8 text-brand-accent" />
                 </span>
-                <h3 className="text-xl font-bold text-brand-ink mb-2">Inquiry received</h3>
+                <h3 className="text-xl font-bold text-brand-ink mb-2">Your email is ready to send</h3>
                 <p className="text-brand-text-secondary max-w-md">
-                  Thanks — our team will review your project and respond within one business day.
+                  We've opened a pre-filled message in your mail client — just hit send. If nothing opened, email us directly at hello@howardtech.dev.
                 </p>
                 <button onClick={() => setSubmitted(false)} className="btn-ghost px-6 py-3 text-sm mt-7">
                   Submit another
                 </button>
               </div>
             ) : (
-              <form className="space-y-7" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+              <form className="space-y-7" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-brand-ink">Lead contact</label>
-                    <input required type="text" placeholder="Full name" className={inputClass} />
+                    <label htmlFor="name" className="text-sm font-semibold text-brand-ink">Lead contact</label>
+                    <input required id="name" name="name" type="text" placeholder="Full name" className={inputClass} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-brand-ink">Enterprise email</label>
-                    <input required type="email" placeholder="name@company.com" className={inputClass} />
+                    <label htmlFor="email" className="text-sm font-semibold text-brand-ink">Enterprise email</label>
+                    <input required id="email" name="email" type="email" placeholder="name@company.com" className={inputClass} />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-brand-ink">Service track</label>
-                    <select className={inputClass}>
+                    <label htmlFor="service" className="text-sm font-semibold text-brand-ink">Service track</label>
+                    <select id="service" name="service" className={inputClass}>
                       <option>Custom App Development</option>
                       <option>Legacy Modernization</option>
                       <option>Cloud & Infrastructure</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-brand-ink">Target budget</label>
-                    <select className={inputClass}>
+                    <label htmlFor="budget" className="text-sm font-semibold text-brand-ink">Target budget</label>
+                    <select id="budget" name="budget" className={inputClass}>
                       <option>$50k - $100k</option>
                       <option>$100k - $500k</option>
                       <option>$500k+</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-brand-ink">Timeline</label>
-                    <select className={inputClass}>
+                    <label htmlFor="timeline" className="text-sm font-semibold text-brand-ink">Timeline</label>
+                    <select id="timeline" name="timeline" className={inputClass}>
                       <option>Next 30 days</option>
                       <option>Next 3 months</option>
                       <option>Strategic partnership</option>
@@ -503,8 +554,8 @@ export function ContactView() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-brand-ink">Technical requirements</label>
-                  <textarea required placeholder="Briefly describe the challenge..." rows={4} className={`${inputClass} resize-none`} />
+                  <label htmlFor="details" className="text-sm font-semibold text-brand-ink">Technical requirements</label>
+                  <textarea required id="details" name="details" placeholder="Briefly describe the challenge..." rows={4} className={`${inputClass} resize-none`} />
                 </div>
                 <div className="flex justify-end">
                   <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} type="submit" className="btn-primary px-8 py-3.5 text-sm">

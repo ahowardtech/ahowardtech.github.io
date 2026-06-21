@@ -4,40 +4,43 @@
  */
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, MotionConfig, useReducedMotion } from 'motion/react';
 import Navbar, { Footer } from './components/Navigation';
 import { HomeView, MethodologyView, ContactView, ServicesView } from './components/Views';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('home');
+  const reduced = useReducedMotion();
 
-  // Simple scroll to top on navigation
+  // Scroll to top on navigation (instant when the user prefers reduced motion)
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentView]);
+    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+  }, [currentView, reduced]);
 
   return (
-    <div className="min-h-screen bg-brand-bg overflow-x-hidden selection:bg-brand-accent/30">
-      <Navbar onNavigate={setCurrentView} currentView={currentView} />
-      
-      <main className="relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentView}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {currentView === 'home' && <HomeView onNavigate={setCurrentView} />}
-            {currentView === 'services' && <ServicesView />}
-            {currentView === 'methodology' && <MethodologyView />}
-            {currentView === 'contact' && <ContactView />}
-          </motion.div>
-        </AnimatePresence>
-      </main>
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-brand-bg overflow-x-hidden selection:bg-brand-accent/30">
+        <Navbar onNavigate={setCurrentView} currentView={currentView} />
 
-      <Footer onNavigate={setCurrentView} />
-    </div>
+        <main className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentView}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {currentView === 'home' && <HomeView onNavigate={setCurrentView} />}
+              {currentView === 'services' && <ServicesView />}
+              {currentView === 'methodology' && <MethodologyView />}
+              {currentView === 'contact' && <ContactView />}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+
+        <Footer onNavigate={setCurrentView} />
+      </div>
+    </MotionConfig>
   );
 }

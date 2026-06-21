@@ -28,11 +28,16 @@
   body {
     @apply bg-brand-bg text-brand-text-primary font-sans antialiased selection:bg-brand-accent/20 selection:text-brand-accent-dark;
   }
+
+  /* Consistent keyboard-focus ring across interactive elements */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-brand-accent/50 ring-offset-2 ring-offset-brand-bg rounded-md;
+  }
 }
 
 @layer utilities {
   .card {
-    @apply bg-white border border-brand-border rounded-xl shadow-[0_1px_2px_rgba(13,27,42,0.04)] hover:shadow-[0_12px_40px_-12px_rgba(13,27,42,0.18)] hover:border-brand-accent/40 transition-all duration-300;
+    @apply bg-white border border-brand-border rounded-xl shadow-[0_1px_2px_rgba(13,27,42,0.04)] hover:shadow-[0_12px_40px_-12px_rgba(13,27,42,0.18)] hover:border-brand-accent/40 hover:-translate-y-0.5 transition-all duration-300;
   }
 
   .accent-gradient-text {
@@ -44,11 +49,11 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-bold rounded-lg hover:bg-brand-accent-dark transition-colors;
+    @apply inline-flex items-center justify-center gap-2 bg-brand-accent text-white font-bold rounded-lg hover:bg-brand-accent-dark transition;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 bg-white text-brand-ink font-bold rounded-lg border border-brand-border hover:border-brand-accent hover:text-brand-accent transition-colors;
+    @apply inline-flex items-center justify-center gap-2 bg-white text-brand-ink font-bold rounded-lg border border-brand-border hover:border-brand-accent hover:text-brand-accent transition;
   }
 }
 
@@ -61,4 +66,14 @@
 
 .animate-agent-pulse {
   animation: agent-pulse 2s infinite;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
