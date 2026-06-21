@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export interface Consultant {
+export interface Agent {
   id: string;
   name: string;
   role: string;
   description: string;
-  image: string;
+  icon: string;
 }
 
 export interface Competency {
@@ -44,34 +44,62 @@ export interface Technology {
   description: string;
 }
 
-export const CONSULTANTS: Consultant[] = [
+export const AGENTS: Agent[] = [
   {
-    id: 'marcus',
-    name: 'Marcus Thorne',
-    role: 'Chief Strategist',
-    description: 'Expert in distributed systems and autonomous agent orchestration.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCS3PCL7tTRmmjOo8O-t65zfW3qo2tXYMnlakKUb4T7PjtVW1tuZIcFBpf5byY_PTTzQP3SabRtcFJ4o8fH5Fw9ARcvaxQZEBzO7P0LzvPzhKXum_yx4AAUu13W5PrwA3iVnDdqdu1NDjYxrWWgY6_1dF90gBqognUIsCmt0E0La5zZaiCN-7yDVsjCQri46W04Oiw5vdlvNf13OhElvc23D2zsWAx4Ltnw_swjIQvuY5cs5fPQsV0ZUZ0-dCPMqvvI_aGshErYtABC'
+    id: 'scout',
+    name: 'Scout',
+    role: 'Discovery & Requirements',
+    description: 'Translates business goals into a precise, agent-ready backlog — mapping domain context, constraints, and success metrics before a line of code is written.',
+    icon: 'Search'
   },
   {
-    id: 'elena',
-    name: 'Dr. Elena Voss',
-    role: 'Head of Engineering Integrity',
-    description: 'Specializing in automated verification and large-scale code quality.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBBkCcyEnzGOYE1B7HjEX02VQhJErT6aqsd9D88ZCrj8xt_yUVw8A-orWRa-C1MT4JKod8Z7-82wG-6VpurbPcHfA3XTyh0VfGHAZivV36zQW8w1fl0UDFzUGV7ZizdNHI8cC2erMomprbxHgmSJUOaoMBdQYFQFztHVSb5tukntWVxwbbNaLEDHwzGoqsNLLOWoOvtPl83x9nTDv1UH1Dzx7e1ABbv7C31GPu9djOrZcx2PKYMYEu_9MAJ9X-1hOHr7S95-vGTWd6K'
+    id: 'atlas',
+    name: 'Atlas',
+    role: 'Architecture & Design',
+    description: 'Designs the system blueprint and selects the stack, encoding the guardrails and review gates the rest of the workforce operates within.',
+    icon: 'PencilRuler'
   },
   {
-    id: 'julian',
-    name: 'Julian Chen',
-    role: 'Infrastructure Architect',
-    description: 'Pioneer in agentic multi-cloud deployment and resilience protocols.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAhn9TXEk-RYL5lmLUKJ7WBX0q_lr6hxkXzLNYrsA_ywW0uGjURkuClBiNBlz37YWDanV5Ei9AN90tG2C_vbfSLa28TqHftygH2vZvJVmkNtcpJVTCr2MtZiVoJmkRdFZGY6fRpy7QO85PsCYoWvCXXvIyjRn86NpZhD5j8OnRLyQGfzaVg68greWUVrJNV5x3DBLkdK703z-POIX7FLJ7SOoawN4Z49ZBRvh1zb1OxTYkwGsTqSAHFKup-DGgcqpYbWH5M7kOxq3eT'
+    id: 'forge',
+    name: 'Forge',
+    role: 'Implementation',
+    description: 'Implements features in parallel against the blueprint — generating production-grade services, APIs, and interfaces at agent speed.',
+    icon: 'Code2'
   },
   {
-    id: 'sarah',
-    name: 'Sarah Khel',
-    role: 'SecOps Lead',
-    description: 'Expert in secure-by-default delivery and enterprise threat neutralization.',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuABlbuOZJH5ecAPU2rmM2-9qe1Zr0KcNgQXxm2Txxlnc60Vu8ZhRFNgY5-fL5_YqffDVLA9XA__hYLdQOs06yJF5N6_xQCsn2A8ZmiS87jwh7TFGGZDw1MR7ZZC9Rnox1VmTNHlYMtXBmgRtwI_u2emeh52o0tog3iFqiFvGA0luEIZZBgEk5gXnRIIbT9t31PiGkmLEZ3Dr4W3EGOokgRuz7rBqNhYr54qnmYDh2S0f4_Qq89UP3ggwyt2fZiQpP10vFDLwOwjqEeU'
+    id: 'lens',
+    name: 'Lens',
+    role: 'Code Review',
+    description: 'Audits every change for correctness, standards, and technical debt, keeping the codebase clean as it grows.',
+    icon: 'ScanSearch'
+  },
+  {
+    id: 'probe',
+    name: 'Probe',
+    role: 'QA & Testing',
+    description: 'Generates and maintains unit, integration, and end-to-end coverage so regressions are caught long before they reach production.',
+    icon: 'FlaskConical'
+  },
+  {
+    id: 'aegis',
+    name: 'Aegis',
+    role: 'Security & Compliance',
+    description: 'Hardens every release with zero-trust defaults, dependency auditing, and a traceable change history that satisfies security and compliance.',
+    icon: 'ShieldCheck'
+  },
+  {
+    id: 'relay',
+    name: 'Relay',
+    role: 'DevOps & Delivery',
+    description: 'Owns CI/CD, infrastructure-as-code, and zero-downtime deployment — automating the entire path from commit to production.',
+    icon: 'Rocket'
+  },
+  {
+    id: 'pulse',
+    name: 'Pulse',
+    role: 'Reliability & Monitoring',
+    description: 'Instruments, observes, and self-heals in production — continuously improving the system against your evolving roadmap.',
+    icon: 'Activity'
   }
 ];
 

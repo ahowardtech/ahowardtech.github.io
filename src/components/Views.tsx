@@ -9,15 +9,16 @@ import {
   ArrowRight, Check, Zap, ShieldCheck, Workflow, Gauge, Bot, Users,
   Landmark, HeartPulse, ShoppingCart, Boxes, Truck, Building2,
   Search, PencilRuler, Activity, Rocket, History, Network,
+  Code2, ScanSearch, FlaskConical,
   Plus, Minus, Mail, MapPin, Phone,
   type LucideIcon,
 } from 'lucide-react';
-import { CONSULTANTS, COMPETENCIES, INDUSTRIES, PROCESS_PHASES, AI_SERVICES, TECHNOLOGIES } from '../constants';
+import { AGENTS, COMPETENCIES, INDUSTRIES, PROCESS_PHASES, AI_SERVICES, TECHNOLOGIES } from '../constants';
 
 const iconMap: Record<string, LucideIcon> = {
   Landmark, HeartPulse, ShoppingCart, Boxes, Truck, Building2,
   Search, PencilRuler, Zap, ShieldCheck, Rocket, Activity,
-  History, Network, Workflow,
+  History, Network, Workflow, Code2, ScanSearch, FlaskConical,
 };
 
 // Shared reveal variants for staggered section entrances.
@@ -116,7 +117,7 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
             { stat: '3x', label: 'Faster delivery velocity' },
             { stat: '98%', label: 'Automated code accuracy' },
             { stat: '100+', label: 'Agents in the workforce' },
-            { stat: '4', label: 'Senior architects leading' },
+            { stat: '8', label: 'Roles across the SDLC' },
           ].map((s) => (
             <motion.div variants={rise} key={s.label} className="text-center">
               <div className="text-4xl md:text-5xl font-black text-brand-ink mb-2">{s.stat}</div>
@@ -192,10 +193,10 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-24">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <div className="max-w-2xl">
-            <span className="eyebrow">The Team</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-brand-ink mt-3 tracking-tight">The HowardTech Council</h2>
+            <span className="eyebrow">The Workforce</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-brand-ink mt-3 tracking-tight">The HowardTech agent council</h2>
             <p className="text-brand-text-secondary text-lg mt-4 leading-relaxed">
-              Four world-class architects at the intersection of AI orchestration, infrastructure, and secure delivery.
+              Eight specialized agents covering every phase of the software lifecycle — from discovery to production monitoring — orchestrated as one continuous pipeline.
             </p>
           </div>
           <button onClick={() => onNavigate('methodology')} className="text-brand-accent font-semibold text-sm inline-flex items-center gap-2 hover:gap-3 transition-all">
@@ -203,18 +204,19 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
           </button>
         </div>
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {CONSULTANTS.map((c) => (
-            <motion.div variants={rise} key={c.id} className="card overflow-hidden group">
-              <div className="relative aspect-[4/5] overflow-hidden bg-brand-surface-light">
-                <img src={c.image} alt={c.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-              </div>
-              <div className="p-6">
-                <h4 className="font-bold text-brand-ink">{c.name}</h4>
-                <p className="text-brand-accent text-xs font-bold uppercase tracking-widest mt-1 mb-3">{c.role}</p>
-                <p className="text-sm text-brand-text-secondary leading-relaxed">{c.description}</p>
-              </div>
-            </motion.div>
-          ))}
+          {AGENTS.map((a) => {
+            const Icon = iconMap[a.icon] ?? Bot;
+            return (
+              <motion.div variants={rise} key={a.id} className="card p-7 group">
+                <div className="w-12 h-12 rounded-lg bg-brand-accent/10 flex items-center justify-center mb-5 group-hover:bg-brand-accent/20 transition-colors">
+                  <Icon className="w-6 h-6 text-brand-accent" />
+                </div>
+                <h4 className="font-bold text-brand-ink">{a.name}</h4>
+                <p className="text-brand-accent text-xs font-bold uppercase tracking-widest mt-1 mb-3">{a.role}</p>
+                <p className="text-sm text-brand-text-secondary leading-relaxed">{a.description}</p>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </section>
 
@@ -366,10 +368,10 @@ export function MethodologyView() {
             <span className="text-[11px] font-bold text-brand-accent-dark uppercase tracking-[0.18em]">The Agentic Edge</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-brand-ink leading-[1.05] tracking-tight mb-6">
-            4 senior experts. <span className="accent-gradient-text">100+ agents.</span> Unlimited precision.
+            8 specialist agents. <span className="accent-gradient-text">One lifecycle.</span> Unlimited precision.
           </h1>
           <p className="text-lg text-brand-text-secondary leading-relaxed max-w-2xl mx-auto">
-            We've replaced the bloat of junior-heavy teams with an orchestration layer where elite consultants lead a tireless agentic workforce.
+            We've replaced the bloat of junior-heavy teams with a roster of specialized agents — one for every phase of the lifecycle, orchestrated end to end and audited at every gate.
           </p>
         </div>
       </section>
@@ -380,12 +382,17 @@ export function MethodologyView() {
           <div className="lg:col-span-7 card p-10">
             <h2 className="text-2xl md:text-3xl font-bold text-brand-ink mb-4 tracking-tight">The Orchestration Core</h2>
             <p className="text-brand-text-secondary text-lg leading-relaxed mb-8 max-w-xl">
-              Four world-class architects don't just write code; they design the system prompts, define constraints, and audit the output of a 24/7 agent workforce.
+              Eight specialized agents cover every phase of delivery — discovery, architecture, build, review, testing, security, deployment, and monitoring — chained into one continuous pipeline under senior architectural supervision.
             </p>
-            <div className="flex gap-3">
-              {CONSULTANTS.map((c) => (
-                <img key={c.id} src={c.image} alt={c.name} className="w-14 h-14 rounded-xl object-cover grayscale hover:grayscale-0 transition-all border border-brand-border" />
-              ))}
+            <div className="flex flex-wrap gap-3">
+              {AGENTS.map((a) => {
+                const Icon = iconMap[a.icon] ?? Bot;
+                return (
+                  <span key={a.id} title={`${a.name} — ${a.role}`} className="w-14 h-14 rounded-xl bg-brand-accent/10 flex items-center justify-center border border-brand-border hover:bg-brand-accent/20 transition-colors">
+                    <Icon className="w-6 h-6 text-brand-accent" />
+                  </span>
+                );
+              })}
             </div>
           </div>
           <div className="lg:col-span-5 card bg-brand-ink text-white flex flex-col items-center justify-center text-center p-10">
@@ -439,7 +446,7 @@ export function MethodologyView() {
             </thead>
             <tbody>
               {[
-                { dim: 'Team Dynamics', trad: '2 seniors + 12 juniors (high overhead)', edge: '4 seniors + an infinite agent workforce' },
+                { dim: 'Team Dynamics', trad: '2 seniors + 12 juniors (high overhead)', edge: '8 specialist agents across the full SDLC' },
                 { dim: 'Reliability', trad: 'Varies; manual peer reviews', edge: 'Deterministic prompts; multi-agent validation' },
                 { dim: 'Velocity', trad: 'Bi-weekly sprint cycles', edge: 'Daily feature production cycles' },
               ].map((row, i, arr) => (
