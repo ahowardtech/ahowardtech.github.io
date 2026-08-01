@@ -666,3 +666,68 @@ export function ContactView() {
     </div>
   );
 }
+
+type LegalDocument = 'privacy' | 'terms';
+
+export function LegalView({ type }: { type: LegalDocument }) {
+  const isPrivacy = type === 'privacy';
+  const title = isPrivacy ? 'Privacy Policy' : 'Terms of Use';
+
+  return (
+    <div className="pt-36 pb-24 px-6 md:px-10">
+      <article className="max-w-3xl mx-auto">
+        <span className="eyebrow">HowardTech</span>
+        <h1 className="text-4xl md:text-5xl font-black text-brand-ink tracking-tight mt-3 mb-4">{title}</h1>
+        <p className="text-sm text-brand-text-secondary mb-12">Last updated: August 1, 2026</p>
+
+        {isPrivacy ? (
+          <div className="space-y-8 text-brand-text-secondary leading-relaxed">
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Information we collect</h2>
+              <p>When you submit a project inquiry, we collect the name, email address, service preferences, budget and timeline selections, and project details you provide.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">How we use it</h2>
+              <p>We use this information only to respond to your inquiry, discuss potential services, and operate our business.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Service providers</h2>
+              <p>Our contact form is processed by Formspree, and this website is hosted on GitHub Pages. Their handling of information is governed by their respective privacy policies.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Cookies and sharing</h2>
+              <p>We do not use advertising cookies, sell personal information, or use third-party advertising trackers on this site.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Your choices</h2>
+              <p>To request access to, correction of, or deletion of information you submitted, contact us at <a className="text-brand-accent hover:underline" href="mailto:info@howardtech.solutions">info@howardtech.solutions</a>.</p>
+            </section>
+          </div>
+        ) : (
+          <div className="space-y-8 text-brand-text-secondary leading-relaxed">
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Using this site</h2>
+              <p>You may use this site for lawful purposes and to learn about HowardTech's services. Do not interfere with the site or attempt to access it in an unauthorized way.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Inquiries and services</h2>
+              <p>Submitting an inquiry does not create a client relationship, contract, or obligation to provide services. Any engagement requires a separate written agreement.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Content and availability</h2>
+              <p>Site content is provided for general information and may change without notice. We do not guarantee that the site will always be available or error-free.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Ownership</h2>
+              <p>HowardTech owns the site's content, branding, and design unless otherwise noted. You may not copy or use them without permission.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-brand-ink mb-3">Governing law and contact</h2>
+              <p>These terms are governed by the laws of Illinois, United States. Questions may be sent to <a className="text-brand-accent hover:underline" href="mailto:info@howardtech.solutions">info@howardtech.solutions</a>.</p>
+            </section>
+          </div>
+        )}
+      </article>
+    </div>
+  );
+}

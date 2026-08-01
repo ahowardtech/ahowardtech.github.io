@@ -7,9 +7,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence, MotionConfig, useReducedMotion } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
 import Navbar, { Footer } from './components/Navigation';
-import { HomeView, MethodologyView, ContactView, ServicesView } from './components/Views';
+import { HomeView, MethodologyView, ContactView, LegalView, ServicesView } from './components/Views';
 
-const viewIds = ['home', 'services', 'methodology', 'contact'] as const;
+const viewIds = ['home', 'services', 'methodology', 'contact', 'privacy', 'terms'] as const;
 type ViewId = (typeof viewIds)[number];
 
 function viewFromHash(): ViewId {
@@ -82,6 +82,8 @@ export default function App() {
               )}
               {currentView === 'methodology' && <MethodologyView />}
               {currentView === 'contact' && <ContactView />}
+              {currentView === 'privacy' && <LegalView type="privacy" />}
+              {currentView === 'terms' && <LegalView type="terms" />}
             </motion.div>
           </AnimatePresence>
         </main>

@@ -220,8 +220,8 @@ export function Footer() {
             © {new Date().getFullYear()} HowardTech Consultancy. Engineered for precision.
           </span>
           <div className="flex gap-6">
-            <button onClick={(e) => { (e.currentTarget as HTMLButtonElement).blur(); }} className="text-xs text-white/40 hover:text-brand-accent transition-colors">Privacy Policy</button>
-            <button onClick={(e) => { (e.currentTarget as HTMLButtonElement).blur(); }} className="text-xs text-white/40 hover:text-brand-accent transition-colors">Terms</button>
+            <a href="#privacy" className="text-xs text-white/40 hover:text-brand-accent transition-colors">Privacy Policy</a>
+            <a href="#terms" className="text-xs text-white/40 hover:text-brand-accent transition-colors">Terms</a>
           </div>
         </div>
       </div>
