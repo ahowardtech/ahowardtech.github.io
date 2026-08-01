@@ -55,6 +55,15 @@
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 bg-white text-brand-ink font-bold rounded-lg border border-brand-border hover:border-brand-accent hover:text-brand-accent transition;
   }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Pulsing dot for the "agents online" status indicator */

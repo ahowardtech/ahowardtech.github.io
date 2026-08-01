@@ -4,14 +4,19 @@
  */
 
 import { motion } from 'motion/react';
-import { Terminal, Linkedin, Twitter, Github, ArrowRight } from 'lucide-react';
+import { useEffect } from 'react';
+import { Terminal, Linkedin, Twitter, Github, ArrowRight, X, ChevronRight } from 'lucide-react';
+import { AI_SERVICES } from '../constants';
 
 interface NavbarProps {
   onNavigate: (view: string) => void;
+  onNavigateSection: (sectionId: string) => void;
   currentView: string;
+  menuOpen: boolean;
+  onMenuToggle: (open: boolean) => void;
 }
 
-export default function Navbar({ onNavigate, currentView }: NavbarProps) {
+export default function Navbar({ onNavigate, onNavigateSection, currentView, menuOpen, onMenuToggle }: NavbarProps) {
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'services', label: 'Services' },
@@ -19,12 +24,27 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
     { id: 'contact', label: 'Contact' },
   ];
 
+  useEffect(() => {
+    // close mobile menu on navigation change
+    onMenuToggle(false);
+  }, [currentView, onMenuToggle]);
+
   return (
     <header className="fixed top-0 left-0 w-full bg-white/85 backdrop-blur-xl border-b border-brand-border z-50 px-6 md:px-10 py-4 flex justify-between items-center">
       <a
         href="#"
         className="flex items-center gap-2.5 cursor-pointer group"
         aria-label="Go to home"
+        onClick={(event) => {
+          if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
+            onNavigate('home');
+          } else {
+            event.preventDefault();
+            onMenuToggle(!menuOpen);
+          }
+        }}
+        aria-expanded={menuOpen}
+        aria-controls="mobile-nav"
       >
         <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand-accent/10 group-hover:bg-brand-accent/15 transition-colors">
           <Terminal className="text-brand-accent w-5 h-5" />
@@ -51,15 +71,84 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
         ))}
       </nav>
 
-      <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={() => onNavigate('contact')}
-        className="btn-primary px-5 py-2.5 text-sm"
-      >
-        Get Started
-        <ArrowRight className="w-4 h-4" />
-      </motion.button>
+      {/* Mobile stacked menu (opened by tapping the Terminal icon) */}
+      {menuOpen && (
+        <>
+          <div
+            className="md:hidden fixed inset-0 bg-black/20 z-30"
+            onClick={() => onMenuToggle(false)}
+            aria-hidden="true"
+          />
+
+          <motion.nav
+            id="mobile-nav"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="md:hidden ml-4 mr-auto max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] overflow-hidden bg-white rounded-[32px] border border-brand-border z-40 px-4 pt-6 pb-5 relative shadow-[0_20px_60px_rgba(15,23,42,0.12)]"
+          >
+            <button
+              type="button"
+              onClick={() => onMenuToggle(false)}
+              className="absolute top-4 right-4 text-brand-text-secondary hover:text-brand-ink"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex flex-col gap-3 pt-8 overflow-y-auto scrollbar-none pb-4" style={{ maxHeight: 'calc(100vh - 6rem)' }}>
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => {
+                    onNavigate(item.id);
+                    onMenuToggle(false);
+                  }}
+                  className={`group w-full text-sm font-semibold text-left py-4 px-4 rounded-3xl transition-colors flex items-center justify-between ${
+                    currentView === item.id ? 'bg-brand-accent/10 text-brand-accent' : 'text-brand-ink hover:bg-brand-surface/80'
+                  }`}
+                >
+                  {item.label}
+                  <ChevronRight className="w-4 h-4 text-brand-text-secondary group-hover:text-brand-ink" />
+                </button>
+              ))}
+
+              <div className="pt-3 border-t border-brand-border mt-4">
+                <div className="rounded-3xl bg-brand-surface/90 p-4">
+                  <h4 className="text-xs font-bold uppercase tracking-[0.12em] text-brand-text-secondary mb-3">Capabilities</h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {AI_SERVICES.map((svc) => (
+                      <button
+                        key={svc.id}
+                        type="button"
+                        onClick={() => {
+                          onNavigateSection(svc.id);
+                          onMenuToggle(false);
+                        }}
+                        className="text-sm text-left text-brand-ink hover:text-brand-accent flex items-center justify-between px-3 py-3 rounded-2xl bg-white/5"
+                      >
+                        {svc.title}
+                        <ChevronRight className="w-4 h-4 text-brand-text-secondary" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.nav>
+        </>
+      )}
+
+      <div className="hidden md:flex">
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => onNavigate('contact')}
+          className="btn-primary px-5 py-2.5 text-sm"
+        >
+          Get Started
+          <ArrowRight className="w-4 h-4" />
+        </motion.button>
+      </div>
     </header>
   );
 }
@@ -92,7 +181,7 @@ export function Footer() {
     <footer className="w-full bg-brand-ink text-white pt-20 pb-10 px-6 md:px-10">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-white/10">
-          <div className="md:col-span-5 flex flex-col gap-5">
+          <div className="md:col-span-4 flex flex-col gap-5">
             <div className="flex items-center gap-2.5">
               <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand-accent/20">
                 <Terminal className="text-brand-accent w-5 h-5" />
@@ -119,7 +208,7 @@ export function Footer() {
           </div>
 
           {columns.map((col) => (
-            <div key={col.heading} className="md:col-span-3">
+            <div key={col.heading} className="hidden md:block md:col-span-3">
               <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-5">{col.heading}</h4>
               <ul className="space-y-3">
                 {col.links.map((link) => (
@@ -136,7 +225,7 @@ export function Footer() {
             </div>
           ))}
 
-          <div className="md:col-span-1 md:col-start-12">
+          <div className="md:col-span-2 md:col-start-11">
             <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-5">Offices</h4>
             <ul className="space-y-3">
               {offices.map((o) => (

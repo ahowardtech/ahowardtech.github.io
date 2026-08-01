@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
 import {
   ArrowRight, Check, Zap, ShieldCheck, Workflow, Gauge, Bot, Users,
@@ -242,8 +242,26 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
   );
 }
 
-export function ServicesView() {
-  const [openId, setOpenId] = useState<string | null>(AI_SERVICES[0].id);
+export function ServicesView({ sectionToOpen, onSectionOpened }: { sectionToOpen?: string | null; onSectionOpened?: () => void }) {
+  const [openId, setOpenId] = useState<string | null>(() => sectionToOpen || AI_SERVICES[0].id);
+
+  useEffect(() => {
+    if (sectionToOpen && sectionToOpen !== openId) {
+      setOpenId(sectionToOpen);
+    }
+  }, [sectionToOpen, openId]);
+
+  useEffect(() => {
+    if (!sectionToOpen || openId !== sectionToOpen) return;
+
+    requestAnimationFrame(() => {
+      const section = document.getElementById(sectionToOpen);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        onSectionOpened?.();
+      }
+    });
+  }, [sectionToOpen, openId, onSectionOpened]);
 
   return (
     <div>
@@ -305,7 +323,7 @@ export function ServicesView() {
               {AI_SERVICES.map((svc) => {
                 const open = openId === svc.id;
                 return (
-                  <div key={svc.id}>
+                  <div key={svc.id} id={svc.id} className="scroll-mt-32">
                     <button
                       onClick={() => setOpenId(open ? null : svc.id)}
                       aria-expanded={open}
@@ -619,7 +637,7 @@ export function ContactView() {
 
         <div className="lg:col-span-4 space-y-6">
           <div className="card p-8 space-y-7">
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-text-secondary">Contact nodes</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-text-secondary">Contact modes</h3>
             {[
               { icon: MapPin, title: 'HQ — Chicago', detail: 'Chicago, IL' },
               { icon: Mail, title: 'Email', detail: 'info@howardtech.solutions' },

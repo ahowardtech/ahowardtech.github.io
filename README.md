@@ -46,6 +46,17 @@ npm run build    # production build -> dist/
 npm run preview  # serve the production build locally
 ```
 
+### Recent local UI updates
+
+- Mobile menu now opens from the `Terminal` icon and includes a top-right close `X` button.
+- The mobile menu is left-aligned, displayed as a rounded card, and closes when tapping outside the panel.
+- The header `Get Started` CTA is hidden on small screens to avoid duplication with the hero CTA.
+- Footer navigation columns are hidden on small screens and remain visible at `md+` breakpoints.
+- A scroll-to-top button appears when the page is scrolled down.
+- A site favicon has been added at `public/favicon.svg` and referenced in `index.html`.
+
+These changes are implemented in `src/components/Navigation.tsx`, `src/App.tsx`, and `index.html`.
+
 ## Deployment
 
 The site deploys to two hosts:
