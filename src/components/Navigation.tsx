@@ -167,7 +167,7 @@ export function Footer() {
     },
   ];
 
-  const offices = ['Chicago', 'Des Moines'];
+  const offices = ['Chicago'];
 
   return (
     <footer className="w-full bg-brand-ink text-white pt-20 pb-10 px-6 md:px-10">
