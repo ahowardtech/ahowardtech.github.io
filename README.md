@@ -4,7 +4,7 @@ Marketing site for **HowardTech** — a consultancy focused on accelerating
 software delivery with agent-driven development. A fast, fully static
 single-page app with a light corporate theme.
 
-🌐 **Live:** https://blue-sea-0ceb6430f.7.azurestaticapps.net
+🌐 **Live:** https://howardtech.solutions
 
 ## Tech stack
 
@@ -25,9 +25,7 @@ src/
   constants.ts         # static content: industries, process phases, services, tech, team
   index.css            # Tailwind v4 theme tokens + utility classes
 public/
-  staticwebapp.config.json  # Azure Static Web Apps SPA routing
-scripts/
-  deploy-azure.ps1     # one-command build + deploy to Azure
+  CNAME                # GitHub Pages custom domain
 ```
 
 The app has no router: `App.tsx` keeps the active view in `useState` and swaps
@@ -59,20 +57,17 @@ These changes are implemented in `src/components/Navigation.tsx`, `src/App.tsx`,
 
 ## Deployment
 
-The site deploys to two hosts:
+GitHub Pages deploys the site automatically on every push to `main` through
+`.github/workflows/deploy.yml`. The workflow builds the Vite app, uploads
+`dist/`, and publishes it to GitHub Pages.
 
-- **Azure Static Web Apps** (Free tier) — primary host, deployed **manually**
-  from the local build:
+`howardtech.solutions` is the primary domain. Namecheap routes the apex domain
+to GitHub Pages with an `ALIAS` record, while `www` is a `CNAME` to
+`ahowardtech.github.io`. The `public/CNAME` file is included in each production
+build so GitHub Pages serves the custom domain. GitHub manages the TLS
+certificate after its DNS TXT ownership challenge is verified.
 
-  ```bash
-  npm run deploy:azure
-  ```
+The contact form posts directly to Formspree from the browser; no application
+server or Azure resource is required.
 
-  Requires the Azure CLI (`az`) and SWA CLI (`swa`) installed and `az login`
-  completed.
-
-- **GitHub Pages** — auto-deploys on every push to `main` via GitHub Actions
-  (`.github/workflows/deploy.yml`).
-
-See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for resource details, manual steps, and
-the deployment log.
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the DNS setup and deployment flow.
