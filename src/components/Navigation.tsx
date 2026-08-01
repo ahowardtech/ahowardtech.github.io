@@ -5,7 +5,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect } from 'react';
-import { Terminal, Linkedin, Twitter, Github, ArrowRight, Menu, X, ChevronRight } from 'lucide-react';
+import { Terminal, ArrowRight, Menu, X, ChevronRight } from 'lucide-react';
 import { AI_SERVICES } from '../constants';
 
 interface NavbarProps {
@@ -185,18 +185,6 @@ export function Footer() {
             <p className="text-white/60 text-sm leading-relaxed max-w-sm">
               Expert-led, agent-driven software delivery. We pair senior engineers with an autonomous agent workforce to ship production software at a fraction of the time.
             </p>
-            <div className="flex gap-3 mt-2">
-              {[Linkedin, Twitter, Github].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 hover:bg-brand-accent hover:text-brand-ink text-white/70 transition-colors"
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
-            </div>
           </div>
 
           {columns.map((col) => (
