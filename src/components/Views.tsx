@@ -15,6 +15,9 @@ import {
 } from 'lucide-react';
 import { AGENTS, COMPETENCIES, INDUSTRIES, PROCESS_PHASES, AI_SERVICES, TECHNOLOGIES } from '../constants';
 
+const contactFormEndpoint = 'https://formspree.io/f/meeyblab';
+type ContactField = 'name' | 'email' | 'details';
+
 const iconMap: Record<string, LucideIcon> = {
   Landmark, HeartPulse, ShoppingCart, Boxes, Truck, Building2,
   Search, PencilRuler, Zap, ShieldCheck, Rocket, Activity,
@@ -466,28 +469,59 @@ export function MethodologyView() {
 
 export function ContactView() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<ContactField, string>>>({});
 
   const inputClass = 'w-full bg-white border border-brand-border rounded-lg px-4 py-3 text-brand-ink placeholder:text-brand-text-secondary/60 focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/15 outline-none transition';
 
-  // Compose a pre-filled email from the form fields and open the visitor's mail client.
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const get = (k: string) => String(data.get(k) ?? '').trim();
-    const name = get('name');
-    const subject = `Project inquiry — ${get('service')}${name ? ` (${name})` : ''}`;
-    const body = [
-      `Name: ${name}`,
-      `Email: ${get('email')}`,
-      `Service track: ${get('service')}`,
-      `Target budget: ${get('budget')}`,
-      `Timeline: ${get('timeline')}`,
-      '',
-      'Technical requirements:',
-      get('details'),
-    ].join('\n');
-    window.location.href = `mailto:info@howardtech.solutions?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSubmitted(true);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const get = (field: ContactField) => String(data.get(field) ?? '').trim();
+    const errors: Partial<Record<ContactField, string>> = {};
+
+    if (!get('name')) {
+      errors.name = 'Enter your name.';
+    }
+    if (!get('email')) {
+      errors.email = 'Enter your email address.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(get('email'))) {
+      errors.email = 'Enter a valid email address.';
+    }
+    if (!get('details')) {
+      errors.details = 'Describe your project requirements.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setSubmitError(null);
+      return;
+    }
+
+    setFieldErrors({});
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch(contactFormEndpoint, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error('Formspree rejected the submission.');
+      }
+
+      form.reset();
+      setSubmitted(true);
+    } catch {
+      setSubmitError('We could not send your inquiry. Please try again in a moment.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -514,24 +548,27 @@ export function ContactView() {
                 <span className="w-16 h-16 rounded-full bg-brand-accent/10 flex items-center justify-center mb-5">
                   <Check className="w-8 h-8 text-brand-accent" />
                 </span>
-                <h3 className="text-xl font-bold text-brand-ink mb-2">Your email is ready to send</h3>
+                <h3 className="text-xl font-bold text-brand-ink mb-2">Inquiry received</h3>
                 <p className="text-brand-text-secondary max-w-md">
-                  We've opened a pre-filled message in your mail client — just hit send. If nothing opened, email us directly at info@howardtech.solutions.
+                  Thanks for reaching out. Our team will review your project details and follow up soon.
                 </p>
-                <button onClick={() => setSubmitted(false)} className="btn-ghost px-6 py-3 text-sm mt-7">
+                <button onClick={() => { setSubmitted(false); setSubmitError(null); }} className="btn-ghost px-6 py-3 text-sm mt-7">
                   Submit another
                 </button>
               </div>
             ) : (
-              <form className="space-y-7" onSubmit={handleSubmit}>
+              <form className="space-y-7" noValidate onSubmit={handleSubmit}>
+                <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-semibold text-brand-ink">Lead contact</label>
-                    <input required id="name" name="name" type="text" placeholder="Full name" className={inputClass} />
+                    <input required id="name" name="name" type="text" placeholder="Full name" aria-invalid={Boolean(fieldErrors.name)} aria-describedby={fieldErrors.name ? 'name-error' : undefined} onChange={() => setFieldErrors((errors) => ({ ...errors, name: undefined }))} className={inputClass} />
+                    {fieldErrors.name && <p id="name-error" className="text-sm text-red-700">{fieldErrors.name}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-semibold text-brand-ink">Enterprise email</label>
-                    <input required id="email" name="email" type="email" placeholder="name@company.com" className={inputClass} />
+                    <input required id="email" name="email" type="email" placeholder="name@company.com" aria-invalid={Boolean(fieldErrors.email)} aria-describedby={fieldErrors.email ? 'email-error' : undefined} onChange={() => setFieldErrors((errors) => ({ ...errors, email: undefined }))} className={inputClass} />
+                    {fieldErrors.email && <p id="email-error" className="text-sm text-red-700">{fieldErrors.email}</p>}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -562,11 +599,17 @@ export function ContactView() {
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="details" className="text-sm font-semibold text-brand-ink">Technical requirements</label>
-                  <textarea required id="details" name="details" placeholder="Briefly describe the challenge..." rows={4} className={`${inputClass} resize-none`} />
+                  <textarea required id="details" name="details" placeholder="Briefly describe the challenge..." rows={4} aria-invalid={Boolean(fieldErrors.details)} aria-describedby={fieldErrors.details ? 'details-error' : undefined} onChange={() => setFieldErrors((errors) => ({ ...errors, details: undefined }))} className={`${inputClass} resize-none`} />
+                  {fieldErrors.details && <p id="details-error" className="text-sm text-red-700">{fieldErrors.details}</p>}
                 </div>
+                {submitError && (
+                  <p role="alert" className="text-sm text-red-700">
+                    {submitError}
+                  </p>
+                )}
                 <div className="flex justify-end">
-                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} type="submit" className="btn-primary px-8 py-3.5 text-sm">
-                    Initialize inquiry <ArrowRight className="w-4 h-4" />
+                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} type="submit" disabled={isSubmitting} className="btn-primary px-8 py-3.5 text-sm disabled:cursor-not-allowed disabled:opacity-70">
+                    {isSubmitting ? 'Sending inquiry...' : 'Initialize inquiry'} <ArrowRight className="w-4 h-4" />
                   </motion.button>
                 </div>
               </form>
