@@ -5,7 +5,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect } from 'react';
-import { Terminal, Linkedin, Twitter, Github, ArrowRight, X, ChevronRight } from 'lucide-react';
+import { Terminal, Linkedin, Twitter, Github, ArrowRight, Menu, X, ChevronRight } from 'lucide-react';
 import { AI_SERVICES } from '../constants';
 
 interface NavbarProps {
@@ -35,16 +35,6 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
         href="#"
         className="flex items-center gap-2.5 cursor-pointer group"
         aria-label="Go to home"
-        onClick={(event) => {
-          if (typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches) {
-            onNavigate('home');
-          } else {
-            event.preventDefault();
-            onMenuToggle(!menuOpen);
-          }
-        }}
-        aria-expanded={menuOpen}
-        aria-controls="mobile-nav"
       >
         <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand-accent/10 group-hover:bg-brand-accent/15 transition-colors">
           <Terminal className="text-brand-accent w-5 h-5" />
@@ -71,7 +61,17 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
         ))}
       </nav>
 
-      {/* Mobile stacked menu (opened by tapping the Terminal icon) */}
+      <button
+        type="button"
+        onClick={() => onMenuToggle(!menuOpen)}
+        className="md:hidden flex h-10 w-10 items-center justify-center rounded-lg text-brand-ink hover:bg-brand-surface transition-colors"
+        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={menuOpen}
+        aria-controls="mobile-nav"
+      >
+        {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+      </button>
+
       {menuOpen && (
         <>
           <div
@@ -84,7 +84,7 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
             id="mobile-nav"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:hidden ml-4 mr-auto max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] overflow-hidden bg-white rounded-[32px] border border-brand-border z-40 px-4 pt-6 pb-5 relative shadow-[0_20px_60px_rgba(15,23,42,0.12)]"
+            className="md:hidden absolute top-[calc(100%+0.5rem)] left-4 right-4 max-h-[calc(100vh-6rem)] overflow-hidden bg-white rounded-[32px] border border-brand-border z-40 px-4 pt-6 pb-5 shadow-[0_20px_60px_rgba(15,23,42,0.12)]"
           >
             <button
               type="button"
