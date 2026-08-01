@@ -21,9 +21,10 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white/85 backdrop-blur-xl border-b border-brand-border z-50 px-6 md:px-10 py-4 flex justify-between items-center">
-      <div
+      <a
+        href="#"
         className="flex items-center gap-2.5 cursor-pointer group"
-        onClick={() => onNavigate('home')}
+        aria-label="Go to home"
       >
         <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-brand-accent/10 group-hover:bg-brand-accent/15 transition-colors">
           <Terminal className="text-brand-accent w-5 h-5" />
@@ -31,13 +32,14 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
         <span className="text-lg font-black text-brand-ink tracking-tight">
                 Howard<span className="text-brand-accent">Tech</span>
         </span>
-      </div>
+      </a>
 
       <nav className="hidden md:flex items-center gap-9">
         {navItems.map((item) => (
-          <button
+          <a
             key={item.id}
-            onClick={() => onNavigate(item.id)}
+            href={item.id === 'home' ? '#' : `#${item.id}`}
+            aria-current={currentView === item.id ? 'page' : undefined}
             className={`text-sm font-semibold transition-colors hover:text-brand-accent ${
               currentView === item.id
                 ? 'text-brand-accent'
@@ -45,7 +47,7 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
             }`}
           >
             {item.label}
-          </button>
+          </a>
         ))}
       </nav>
 
@@ -62,7 +64,7 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
   );
 }
 
-export function Footer({ onNavigate }: { onNavigate: (view: string) => void }) {
+export function Footer() {
   const columns = [
     {
       heading: 'Navigate',
@@ -122,12 +124,12 @@ export function Footer({ onNavigate }: { onNavigate: (view: string) => void }) {
               <ul className="space-y-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <button
-                      onClick={() => onNavigate(link.view)}
+                      <a
+                        href={link.view === 'home' ? '#' : `#${link.view}`}
                       className="text-sm text-white/70 hover:text-brand-accent transition-colors text-left"
                     >
                       {link.label}
-                    </button>
+                      </a>
                   </li>
                 ))}
               </ul>
