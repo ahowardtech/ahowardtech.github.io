@@ -86,15 +86,7 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
             animate={{ opacity: 1, y: 0 }}
             className="md:hidden absolute top-[calc(100%+0.5rem)] left-4 right-4 max-h-[calc(100vh-6rem)] overflow-hidden bg-white rounded-[32px] border border-brand-border z-40 px-4 pt-6 pb-5 shadow-[0_20px_60px_rgba(15,23,42,0.12)]"
           >
-            <button
-              type="button"
-              onClick={() => onMenuToggle(false)}
-              className="absolute top-4 right-4 text-brand-text-secondary hover:text-brand-ink"
-              aria-label="Close menu"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <div className="flex flex-col gap-3 pt-8 overflow-y-auto scrollbar-none pb-4" style={{ maxHeight: 'calc(100vh - 6rem)' }}>
+            <div className="flex flex-col gap-3 overflow-y-auto scrollbar-none pb-4" style={{ maxHeight: 'calc(100vh - 6rem)' }}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
