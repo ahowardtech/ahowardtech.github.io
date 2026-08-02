@@ -72,9 +72,9 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('contact')} className="btn-primary px-7 py-3.5 text-sm">
                 Start a project inquiry <ArrowRight className="w-4 h-4" />
               </motion.button>
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('methodology')} className="btn-ghost px-7 py-3.5 text-sm">
-                View Methodology
-              </motion.button>
+              <motion.a whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} href={CALENDLY_URL} target="_blank" rel="noreferrer" className="btn-ghost px-7 py-3.5 text-sm">
+                Book a discovery call
+              </motion.a>
             </motion.div>
             <motion.div variants={rise} className="flex items-center gap-6 mt-10 text-sm text-brand-text-secondary">
               <span className="flex items-center gap-2"><Check className="w-4 h-4 text-brand-accent" /> 3x faster delivery</span>
@@ -555,6 +555,9 @@ export function ContactView() {
         <p className="text-lg text-brand-text-secondary leading-relaxed">
           Connect with our lead consultants to define your project scope, security parameters, and deployment roadmap.
         </p>
+        <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="btn-ghost px-6 py-3 text-sm mt-7">
+          Prefer to talk first? Book a discovery call <ArrowRight className="w-4 h-4" />
+        </a>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-24">
