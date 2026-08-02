@@ -84,9 +84,9 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
             id="mobile-nav"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:hidden absolute top-[calc(100%+0.5rem)] left-4 right-4 max-h-[calc(100vh-6rem)] overflow-hidden bg-white rounded-[32px] border border-brand-border z-40 px-4 pt-6 pb-5 shadow-[0_20px_60px_rgba(15,23,42,0.12)]"
+            className="md:hidden absolute top-[calc(100%+0.5rem)] left-4 right-4 h-[calc(100dvh-6rem)] overflow-hidden bg-white rounded-[32px] border border-brand-border z-40 px-4 pt-6 pb-5 shadow-[0_20px_60px_rgba(15,23,42,0.12)]"
           >
-            <div className="flex flex-col gap-3 overflow-y-auto scrollbar-none pb-4" style={{ maxHeight: 'calc(100vh - 6rem)' }}>
+            <div className="flex h-full min-h-0 flex-col gap-3 overflow-y-auto overscroll-contain scrollbar-none pb-4 touch-pan-y">
               {navItems.map((item) => (
                 <button
                   key={item.id}
