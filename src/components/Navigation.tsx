@@ -6,7 +6,7 @@
 import { motion } from 'motion/react';
 import { useEffect } from 'react';
 import { Terminal, ArrowRight, Menu, X, ChevronRight } from 'lucide-react';
-import { AI_SERVICES, CALENDLY_URL } from '../constants';
+import { AI_SERVICES } from '../constants';
 
 interface NavbarProps {
   onNavigate: (view: string) => void;
@@ -87,7 +87,7 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
             className="md:hidden absolute top-[calc(100%+0.5rem)] left-4 right-4 h-[calc(100dvh-6rem)] overflow-hidden bg-white rounded-[32px] border border-brand-border z-40 px-4 pt-6 pb-5 shadow-[0_20px_60px_rgba(15,23,42,0.12)]"
           >
             <div className="flex h-full min-h-0 flex-col gap-3 overflow-y-auto overscroll-contain scrollbar-none pb-4 touch-pan-y">
-              {navItems.map((item) => (
+              {navItems.filter((item) => item.id !== 'contact').map((item) => (
                 <button
                   key={item.id}
                   type="button"
@@ -103,6 +103,18 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
                   <ChevronRight className="w-4 h-4 text-brand-text-secondary group-hover:text-brand-ink" />
                 </button>
               ))}
+
+              <button
+                type="button"
+                onClick={() => {
+                  onNavigate('contact');
+                  onMenuToggle(false);
+                }}
+                className="btn-primary w-full px-4 py-3.5 text-sm"
+              >
+                Start a project inquiry
+                <ArrowRight className="w-4 h-4" />
+              </button>
 
               <div className="pt-3 border-t border-brand-border mt-4">
                 <div className="rounded-3xl bg-brand-surface/90 p-4">
@@ -131,17 +143,15 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
       )}
 
       <div className="hidden md:flex">
-        <motion.a
+        <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          href={CALENDLY_URL}
-          target="_blank"
-          rel="noreferrer"
+          onClick={() => onNavigate('contact')}
           className="btn-primary px-5 py-2.5 text-sm"
         >
-          Book a call
+          Start an inquiry
           <ArrowRight className="w-4 h-4" />
-        </motion.a>
+        </motion.button>
       </div>
     </header>
   );

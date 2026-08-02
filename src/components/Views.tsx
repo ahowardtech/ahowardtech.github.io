@@ -69,9 +69,9 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
               We pair senior engineers with an autonomous agent workforce to design, build, and ship enterprise software — accelerating your roadmap without expanding headcount.
             </motion.p>
             <motion.div variants={rise} className="flex flex-col sm:flex-row gap-4">
-              <motion.a whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} href={CALENDLY_URL} target="_blank" rel="noreferrer" className="btn-primary px-7 py-3.5 text-sm">
-                Book a discovery call <ArrowRight className="w-4 h-4" />
-              </motion.a>
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('contact')} className="btn-primary px-7 py-3.5 text-sm">
+                Start a project inquiry <ArrowRight className="w-4 h-4" />
+              </motion.button>
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('methodology')} className="btn-ghost px-7 py-3.5 text-sm">
                 View Methodology
               </motion.button>
@@ -232,9 +232,9 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
             <p className="text-white/70 text-lg max-w-2xl mx-auto mb-9">
               Join the teams shipping faster with an expert-led, agent-driven workforce.
             </p>
-            <motion.a whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} href={CALENDLY_URL} target="_blank" rel="noreferrer" className="btn-primary px-8 py-4 text-sm">
-              Book a discovery call <ArrowRight className="w-4 h-4" />
-            </motion.a>
+            <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} onClick={() => onNavigate('contact')} className="btn-primary px-8 py-4 text-sm">
+              Start a project inquiry <ArrowRight className="w-4 h-4" />
+            </motion.button>
           </div>
         </div>
       </section>
