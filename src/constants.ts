@@ -259,12 +259,17 @@ export const AI_SERVICES: Service[] = [
 ];
 
 export const TECHNOLOGIES: Technology[] = [
+  { name: 'AWS & Azure', description: 'Cloud platforms for secure, scalable applications, integrations, and modern operations.' },
+  { name: 'Java & J2EE', description: 'Enterprise Java services, integrations, and modernization for mission-critical systems.' },
+  { name: 'React', description: 'Modern, component-driven web interfaces built for speed, usability, and maintainability.' },
+  { name: 'Angular', description: 'Structured, enterprise-ready frontend applications for complex business workflows.' },
   { name: 'TypeScript', description: 'Type-safe foundations for large, maintainable codebases across the stack.' },
-  { name: 'React', description: 'Modern, component-driven interfaces with the ecosystem to back them.' },
   { name: 'Node.js', description: 'High-throughput services and APIs on a fast, battle-tested runtime.' },
-  { name: 'Python', description: 'Automation, data, and backend services where libraries and expressiveness matter.' },
-  { name: 'Kubernetes', description: 'Orchestrated, self-healing deployments that scale with demand.' },
-  { name: 'AWS', description: 'Cloud infrastructure with the breadth to run anything you build.' },
+  { name: 'Python', description: 'Automation, data, AI, and backend services where libraries and expressiveness matter.' },
+  { name: 'Docker', description: 'Reproducible environments from a developer laptop to production.' },
+  { name: 'Kubernetes & CaaS', description: 'Managed container platforms, orchestration, and resilient workloads that scale with demand.' },
   { name: 'PostgreSQL', description: 'Reliable, relational data storage trusted at scale.' },
-  { name: 'Docker', description: "Reproducible environments from a developer's laptop to production." }
+  { name: 'Enterprise Data Lakes & Databricks', description: 'Lakehouse architecture, data pipelines, governed analytics, and scalable data platforms.' },
+  { name: 'CI/CD & Infrastructure as Code', description: 'Automated delivery pipelines and repeatable cloud environments built for reliable releases.' },
+  { name: 'APIs & Integration', description: 'Secure API design and enterprise integrations that connect systems, teams, and data.' }
 ];
