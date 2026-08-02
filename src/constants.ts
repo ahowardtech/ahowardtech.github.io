@@ -44,6 +44,8 @@ export interface Technology {
   description: string;
 }
 
+export const CALENDLY_URL = 'https://calendly.com/howardtech-dev/30min';
+
 export const AGENTS: Agent[] = [
   {
     id: 'scout',

@@ -13,7 +13,7 @@ import {
   Plus, Minus, Mail, MapPin,
   type LucideIcon,
 } from 'lucide-react';
-import { AGENTS, COMPETENCIES, INDUSTRIES, PROCESS_PHASES, AI_SERVICES, TECHNOLOGIES } from '../constants';
+import { AGENTS, CALENDLY_URL, COMPETENCIES, INDUSTRIES, PROCESS_PHASES, AI_SERVICES, TECHNOLOGIES } from '../constants';
 
 const contactFormEndpoint = 'https://formspree.io/f/meeyblab';
 type ContactField = 'name' | 'email' | 'details';
@@ -69,9 +69,9 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
               We pair senior engineers with an autonomous agent workforce to design, build, and ship enterprise software — accelerating your roadmap without expanding headcount.
             </motion.p>
             <motion.div variants={rise} className="flex flex-col sm:flex-row gap-4">
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('contact')} className="btn-primary px-7 py-3.5 text-sm">
-                Get Started <ArrowRight className="w-4 h-4" />
-              </motion.button>
+              <motion.a whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} href={CALENDLY_URL} target="_blank" rel="noreferrer" className="btn-primary px-7 py-3.5 text-sm">
+                Book a discovery call <ArrowRight className="w-4 h-4" />
+              </motion.a>
               <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => onNavigate('methodology')} className="btn-ghost px-7 py-3.5 text-sm">
                 View Methodology
               </motion.button>
@@ -232,9 +232,9 @@ export function HomeView({ onNavigate }: { onNavigate: (v: string) => void }) {
             <p className="text-white/70 text-lg max-w-2xl mx-auto mb-9">
               Join the teams shipping faster with an expert-led, agent-driven workforce.
             </p>
-            <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} onClick={() => onNavigate('contact')} className="btn-primary px-8 py-4 text-sm">
-              Request a consultation <ArrowRight className="w-4 h-4" />
-            </motion.button>
+            <motion.a whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} href={CALENDLY_URL} target="_blank" rel="noreferrer" className="btn-primary px-8 py-4 text-sm">
+              Book a discovery call <ArrowRight className="w-4 h-4" />
+            </motion.a>
           </div>
         </div>
       </section>
@@ -570,9 +570,14 @@ export function ContactView() {
                 <p className="text-brand-text-secondary max-w-md">
                   Thanks for reaching out. Our team will review your project details and follow up soon.
                 </p>
-                <button onClick={() => { setSubmitted(false); setSubmitError(null); }} className="btn-ghost px-6 py-3 text-sm mt-7">
-                  Submit another
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3 mt-7">
+                  <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="btn-primary px-6 py-3 text-sm">
+                    Book a discovery call <ArrowRight className="w-4 h-4" />
+                  </a>
+                  <button onClick={() => { setSubmitted(false); setSubmitError(null); }} className="btn-ghost px-6 py-3 text-sm">
+                    Submit another
+                  </button>
+                </div>
               </div>
             ) : (
               <form className="space-y-7" noValidate onSubmit={handleSubmit}>

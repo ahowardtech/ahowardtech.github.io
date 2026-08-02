@@ -6,7 +6,7 @@
 import { motion } from 'motion/react';
 import { useEffect } from 'react';
 import { Terminal, ArrowRight, Menu, X, ChevronRight } from 'lucide-react';
-import { AI_SERVICES } from '../constants';
+import { AI_SERVICES, CALENDLY_URL } from '../constants';
 
 interface NavbarProps {
   onNavigate: (view: string) => void;
@@ -131,15 +131,17 @@ export default function Navbar({ onNavigate, onNavigateSection, currentView, men
       )}
 
       <div className="hidden md:flex">
-        <motion.button
+        <motion.a
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => onNavigate('contact')}
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noreferrer"
           className="btn-primary px-5 py-2.5 text-sm"
         >
-          Get Started
+          Book a call
           <ArrowRight className="w-4 h-4" />
-        </motion.button>
+        </motion.a>
       </div>
     </header>
   );
