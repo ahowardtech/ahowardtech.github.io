@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HowardTech Site Flow and Logic</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        color: #10212e;
+        background: #f6f9fa;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.6; }
+      main { max-width: 1040px; margin: 0 auto; padding: 48px 24px 72px; }
+      h1, h2, h3 { line-height: 1.2; }
+      h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.4rem 0 0.75rem; }
+      h2 { margin-top: 3rem; }
+      h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+      p, li { color: #445766; }
+      a { color: #008f8b; }
+      code { padding: 0.15em 0.35em; border-radius: 4px; background: #eaf0f2; font-size: 0.9em; }
+      pre { overflow-x: auto; padding: 16px; border-radius: 10px; background: #10212e; color: #e6f7f5; }
+      .eyebrow { color: #008f8b; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+      .lead { font-size: 1.1rem; max-width: 760px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); gap: 16px; }
+      .card { padding: 20px; border: 1px solid #dce7e9; border-radius: 14px; background: #fff; }
+      .card strong { color: #10212e; }
+      .flow { display: grid; gap: 12px; max-width: 720px; margin: 1.5rem auto; }
+      .node { position: relative; padding: 16px 18px; border-radius: 12px; background: #fff; border: 1px solid #cbdde0; box-shadow: 0 4px 12px rgba(16, 33, 46, 0.05); }
+      .node::after { content: "↓"; display: block; position: absolute; left: 50%; bottom: -28px; color: #0d9488; font-size: 1.5rem; transform: translateX(-50%); }
+      .node:last-child::after { display: none; }
+      .accent { background: #e8f8f7; border-color: #91d9d3; }
+      .dark { background: #10212e; border-color: #10212e; }
+      .dark h3, .dark p { color: #fff; }
+      .dark p { opacity: 0.8; }
+      table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #dce7e9; border-radius: 14px; overflow: hidden; }
+      th, td { padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #dce7e9; }
+      th { background: #eaf7f6; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+      tr:last-child td { border-bottom: 0; }
+      .note { padding: 16px 18px; border-left: 4px solid #0d9488; background: #e9f8f7; border-radius: 0 8px 8px 0; }
+      @media (max-width: 640px) {
+        main { padding: 32px 16px 56px; }
+        th, td { padding: 11px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="eyebrow">Internal reference</span>
+      <h1>HowardTech site flow and logic</h1>
+      <p class="lead">A plain-language map of how <strong>howardtech.solutions</strong> works—from a visitor opening the site through hosting, navigation, contact submission, and deployment.</p>
+      <p><strong>Last updated:</strong> August 1, 2026</p>
+
+      <h2>1. Visitor and delivery flow</h2>
+      <div class="flow">
+        <div class="node accent"><h3>Visitor opens the domain</h3><p>A browser requests <code>https://howardtech.solutions</code>.</p></div>
+        <div class="node"><h3>Namecheap DNS routes the request</h3><p>The root-domain ALIAS points to <code>ahowardtech.github.io</code>. The <code>www</code> CNAME points there too.</p></div>
+        <div class="node"><h3>GitHub Pages serves the site</h3><p>GitHub verifies the custom domain, provides the HTTPS certificate, and serves the site through its CDN.</p></div>
+        <div class="node dark"><h3>Browser loads the Vite application</h3><p>The browser receives the static HTML, CSS, JavaScript, and assets. React then renders the interactive site.</p></div>
+      </div>
+
+      <h2>2. Application structure</h2>
+      <div class="grid">
+        <div class="card"><h3>React + TypeScript</h3><p>Renders the site interface and handles interactions in the browser.</p></div>
+        <div class="card"><h3>Vite</h3><p>Builds source files into optimized static files in <code>dist/</code>.</p></div>
+        <div class="card"><h3>Tailwind CSS</h3><p>Provides the responsive layout, color system, spacing, and component styles.</p></div>
+        <div class="card"><h3>Motion</h3><p>Provides page and UI animations while respecting reduced-motion preferences.</p></div>
+      </div>
+
+      <h2>3. React basics in this project</h2>
+      <p>React builds the interface from small, reusable JavaScript functions called <strong>components</strong>. A component returns JSX, which looks like HTML but is written inside a <code>.tsx</code> file. React turns that JSX into the visible page.</p>
+      <pre>src/main.tsx
+  → finds the &lt;div id="root"&gt; in index.html
+  → starts React
+  → renders &lt;App /&gt;
+
+src/App.tsx
+  → decides which page view to show
+  → renders shared Navbar and Footer
+  → passes data and actions to components</pre>
+      <table>
+        <thead><tr><th>Concept</th><th>Meaning here</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Component</td><td>A reusable piece of the interface.</td><td><code>Navbar</code>, <code>Footer</code>, <code>ContactView</code>, and <code>ServicesView</code>.</td></tr>
+          <tr><td>JSX</td><td>HTML-like markup inside a TypeScript file.</td><td><code>&lt;ContactView /&gt;</code> tells React to render the contact-page component.</td></tr>
+          <tr><td>State</td><td>Information React remembers while someone uses the site. When it changes, React updates the screen.</td><td><code>currentView</code> remembers the active page; <code>menuOpen</code> remembers whether the mobile menu is visible.</td></tr>
+          <tr><td>Props</td><td>Data or functions a parent component gives to a child component.</td><td><code>App</code> gives <code>Navbar</code> an <code>onNavigate</code> function so a menu click can change the active page.</td></tr>
+          <tr><td>Event handler</td><td>Code that runs after a visitor action.</td><td>A button's <code>onClick</code> can open the mobile menu or navigate to Contact.</td></tr>
+        </tbody>
+      </table>
+      <p class="note">React does not redraw the entire browser page for a menu click. It updates only the parts affected by changed state, such as the visible view or the mobile menu.</p>
+
+      <h2>4. Page navigation logic</h2>
+      <p>The site is a single-page application. It does not load a separate server page for Home, Services, Methodology, Contact, Privacy, or Terms.</p>
+      <table>
+        <thead><tr><th>Visitor action</th><th>What happens</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Clicks a navigation link</td><td>The URL hash changes, for example to <code>#services</code>.</td><td>React changes the active view and scrolls to the top.</td></tr>
+          <tr><td>Opens the mobile hamburger</td><td>React changes <code>menuOpen</code> to show the overlay menu.</td><td>Visitors can choose a main page or a service capability.</td></tr>
+          <tr><td>Chooses a capability</td><td>The app opens Services, expands the selected service accordion, and scrolls to it.</td><td>The visitor lands on the relevant service details.</td></tr>
+          <tr><td>Clicks Privacy Policy or Terms</td><td>The URL changes to <code>#privacy</code> or <code>#terms</code>.</td><td>The appropriate basic legal view is shown.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>5. Contact form logic</h2>
+      <div class="flow">
+        <div class="node"><h3>Visitor completes the form</h3><p>Name, email, project details, service track, budget, and timeline are collected. Required fields are validated in the browser.</p></div>
+        <div class="node"><h3>Browser submits to Formspree</h3><p>The form data is sent over HTTPS to the configured Formspree endpoint. The site does not run its own backend.</p></div>
+        <div class="node dark"><h3>Success or error state</h3><p>A successful request shows an inquiry confirmation. A failed request shows a retry message.</p></div>
+      </div>
+      <p class="note">The hidden <code>_gotcha</code> field is a honeypot used to discourage automated spam submissions.</p>
+
+      <h2>6. Deployment flow</h2>
+      <div class="flow">
+        <div class="node"><h3>Code is pushed to <code>main</code></h3><p>The GitHub Actions workflow starts automatically.</p></div>
+        <div class="node"><h3>GitHub Actions builds the site</h3><p>The workflow installs dependencies and runs <code>npm run build</code>.</p></div>
+        <div class="node"><h3>The <code>dist/</code> artifact is uploaded</h3><p>Vite includes content-hashed CSS and JavaScript assets plus files from <code>public/</code>.</p></div>
+        <div class="node dark"><h3>GitHub Pages publishes the build</h3><p>The CDN begins serving the new static site. New hashed assets avoid stale browser files.</p></div>
+      </div>
+
+      <h2>7. Domain records and custom-domain files</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Location</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>ALIAS</td><td>Namecheap, host <code>@</code></td><td>Connects the root domain to <code>ahowardtech.github.io</code>.</td></tr>
+          <tr><td>CNAME</td><td>Namecheap, host <code>www</code></td><td>Connects <code>www.howardtech.solutions</code> to GitHub Pages.</td></tr>
+          <tr><td>Verification TXT</td><td>Namecheap</td><td>Proves ownership of the domain to GitHub Pages.</td></tr>
+          <tr><td><code>public/CNAME</code></td><td>Repository source</td><td>Places <code>howardtech.solutions</code> in the deployed artifact so Pages retains the custom-domain association.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>8. What is not part of the live site</h2>
+      <ul>
+        <li>Azure is not used for hosting or deployment.</li>
+        <li>There is no application server or database for the marketing site.</li>
+        <li>Internal HTML references belong in <code>Project Documents/</code>, which is not copied to the published site.</li>
+      </ul>
+    </main>
+  </body>
+</html>
